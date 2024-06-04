@@ -3,8 +3,8 @@ Gem::Specification.new do |gem|
   gem.version       = '0.1'
   gem.authors       = 'John Labovitz'
   gem.email         = 'johnl@johnlabovitz.com'
-  gem.summary       = %q{Converts musical pitches between MIDI, SPN, etc.}
-  gem.description   = %q{Converts musical pitches between MIDI, SPN, etc..}
+  gem.summary       = %q{Create and analyze musical pitches from MIDI names/numbers and scientific pitch notation (SPN)}
+  gem.description   = %q{Create and analyze musical pitches from MIDI names/numbers and scientific pitch notation (SPN)..}
   gem.homepage      = 'https://github.com/jslabovitz/pitch.git'
 
   gem.files         = `git ls-files`.split($/)

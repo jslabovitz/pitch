@@ -12,6 +12,8 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ['lib']
 
+  gem.add_dependency 'tty-command', '~> 0.10'
+
   gem.add_development_dependency 'bundler', '~> 2.5'
   gem.add_development_dependency 'minitest', '~> 5.23'
   gem.add_development_dependency 'minitest-power_assert', '~> 0.3'

@@ -47,6 +47,17 @@ class Pitch
       assert { pitch1 == pitch2 }
     end
 
+    OUTPUT_FILE = 'test/tmp/output.wav'
+
+    def test_analyze
+      File.unlink(OUTPUT_FILE) if File.exist?(OUTPUT_FILE)
+      FileUtils.mkpath(File.dirname(OUTPUT_FILE))
+      pitch = Pitch.new_from_spn('C4')
+      pitch.write_to_file(OUTPUT_FILE)
+      pitch2 = Pitch.read_from_file(OUTPUT_FILE)
+      assert { pitch2 == pitch }
+    end
+
   end
 
 end

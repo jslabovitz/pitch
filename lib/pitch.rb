@@ -1,6 +1,4 @@
-# see:
-#   https://computermusicresource.com/midikeys.html
-#   https://en.wikipedia.org/wiki/Scientific_pitch_notation
+require 'tty-command'
 
 class Pitch
 
@@ -9,6 +7,25 @@ class Pitch
 
   SEMITONE_NAMES = %w[C C# D D# E F F# G G# A A# B]
   NUM_SEMITONES = SEMITONE_NAMES.count
+
+  def self.read_from_file(file)
+    out, _ = run_command(
+      'aubiopitch',
+      '--samplerate', 48000,  # doesn't work with higher sample rates?
+      '--input', file,
+      '--pitch-unit', 'midi',
+    )
+    values = out.split(/\n/).map { |line| line.split(/\s+/).last.to_f }.reject(&:zero?)
+    raise "Couldn't detect pitches" if values.empty?
+    value = (values.sum / values.count).round
+    new_from_midi_num(value)
+  end
+
+  def self.run_command(*args)
+    TTY::Command.new(printer: :quiet).run(
+      *args.flatten.compact.map(&:to_s),
+      only_output_on_error: true)
+  end
 
   def self.new_from_midi(arg)
     case arg
@@ -86,6 +103,18 @@ class Pitch
 
   def -(n)
     self + (-n)
+  end
+
+  def write_to_file(file, duration: 5, rate: 48000, depth: 24)
+    self.class.run_command(
+      'sox',
+      '--null',
+      '--rate', rate,
+      '--bits', depth,
+      file,
+      'synth', duration, 'pluck', to_spn,
+    )
+    file
   end
 
 end
